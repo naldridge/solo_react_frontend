@@ -7,7 +7,8 @@ class ZipForm extends Component {
         this.state = {
             zip: '',
             lat: '',
-            long: ''
+            long: '',
+            address: ''
         }
     }
 
@@ -23,22 +24,24 @@ class ZipForm extends Component {
         const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.state.zip}&key=AIzaSyDzmHJp1OGtR8iTZRFFGzwIXfpbC6pP8Pk`;
         const response = await fetch(url).then(response => response.json());
 
-
+        //console.log("zip_response: ", response);
         const newLat = response.results[0].geometry.location.lat;
         const newLong = response.results[0].geometry.location.lng;
+        const newAddress = response.results[0].formatted_address;
 
         this.setState({
             lat: newLat,
-            long: newLong
+            long: newLong,
+            address: newAddress
         });
-        console.log("Lat: ", this.state.lat);
-        console.log("Long: ", this.state.long);
+/*         console.log("Lat: ", this.state.lat);
+        console.log("Long: ", this.state.long); */
 
         
     }
 
     render() {
-        const { lat, long } = this.state;
+        const { lat, long, address } = this.state;
 
         return (
             <div className="ZipSearch">
@@ -48,7 +51,7 @@ class ZipForm extends Component {
                         }}/>
                     <button type="Submit">Search</button>
                 </form>
-                {!!lat && !!long ? (<WeatherDisplay lat={lat} long={long} />): null}
+                {!!lat && !!long ? (<WeatherDisplay lat={lat} long={long} address={address} />): null}
 
             </div>
         );
