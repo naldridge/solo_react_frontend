@@ -1,9 +1,12 @@
 import ZipForm from "./ZipForm";
 
+function Weather() {
+    return (
+      <div>
+        <h2>Weather Page</h2>
+        <ZipForm />
+      </div>
+    );
+  }
 
-export default (props) => (
-    <div>
-        <h1>This is the weather page</h1>
-    
-    </div>
-);
+  export default Weather;

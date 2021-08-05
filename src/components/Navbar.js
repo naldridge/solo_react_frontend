@@ -1,6 +1,6 @@
 import Home from './Home';
 import Weather from './Weather';
-import ZipForm from './ZipForm';
+//import ZipForm from './ZipForm';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 
@@ -13,9 +13,9 @@ const Navbar = () => {
                         <Link to="/">Home</Link>
                         <Link to="/weather">Weather</Link>
                     </nav>
-                    <div className="NavSearch">
+{/*                     <div className="NavSearch">
                         <ZipForm />
-                    </div>
+                    </div> */}
                 </div>
                 <Switch>
                     <Route exact path="/">

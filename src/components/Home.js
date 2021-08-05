@@ -1,5 +1,9 @@
-export default (props) => (
-    <>
-        <h1>This is the home page</h1>
-    </>
-);
+function Home() {
+    return (
+      <div>
+        <h2>Home</h2>
+      </div>
+    );
+  }
+
+  export default Home;
