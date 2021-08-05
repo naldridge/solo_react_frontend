@@ -19,7 +19,10 @@ class WeatherDisplay extends Component {
         //console.log("Weather Data: ", response);
         const currentWeatherData = response.current;
         const dailyWeatherData = response.daily;
-        const alertWeatherData = response.alerts;
+        let alertWeatherData = [];
+        if (!!response.alerts) {
+            alertWeatherData = response.alerts;
+        }
 
         this.setState({
             currentWeatherData: currentWeatherData,
@@ -28,6 +31,7 @@ class WeatherDisplay extends Component {
         })
 
         console.log('State: ', this.state);
+        console.log('Weather Description')
 
     }
 
@@ -41,7 +45,7 @@ class WeatherDisplay extends Component {
     _convertUnixtoLocal(t) {
         let gmt = new Date(t * 1000);
         let hours = gmt.getHours();
-        
+
         if (gmt.getMinutes() < 10) {
             var mins = '0' + gmt.getMinutes();
         } else {
@@ -57,32 +61,44 @@ class WeatherDisplay extends Component {
         };
     }
 
+    _convertUnixtoDayofWeek(d) {
+        let stamp = new Date(d * 1000);
+        let day = stamp.toLocaleDateString('en-US', { weekday: 'short' });
+        let dateNote = stamp.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })
+
+        return day + ' ' + dateNote;
+    }
+
     render() {
         const { currentWeatherData, dailyWeatherData, alertWeatherData } = this.state;
         return (
             <div className="weatherContainer">
+                <h2>{this.props.address}</h2>
                 <div className="alertContainer">
-                    {alertWeatherData.map((alert, index) => {
-                        return (<div key={index}><h4>{alert.event}</h4></div>)
-                    })}
+                    {alertWeatherData.length > 0 ? (
+                        alertWeatherData.map((alert, index) => {
+                            return (<div key={index}><h4>{alert.event}</h4></div>)
+                        })
+                    ) : (<></>)}
                 </div>
                 <div className="weeklyWeather">
-
+                    {dailyWeatherData.map((data, index) => {
+                        return (<div key={index}>{this._convertUnixtoDayofWeek(data.dt)}</div>)
+                    })}
                 </div>
                 <div className="currentWeather">
-                    <h2>{this.props.address}</h2>
                     <div className="current_temp">
                         <p>Current Temp:{Math.round(currentWeatherData.temp)}°F</p>
                         <p>Feels Like:{Math.round(currentWeatherData.feels_like)}°F</p>
                         <p>Humidity:{currentWeatherData.humidity}%</p>
                         <p>Sunrise:{this._convertUnixtoLocal(currentWeatherData.sunrise)}</p>
                         <p>Sunset:{this._convertUnixtoLocal(currentWeatherData.sunset)}</p>
-                        <p>Weather:</p>
+                        {/* <p>Weather:{currentWeatherData.weather[0].description}</p> */}
                     </div>
 
 
                 </div>
-            </div>
+            </div >
         );
     }
 }
