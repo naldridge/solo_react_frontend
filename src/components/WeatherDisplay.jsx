@@ -18,7 +18,7 @@ class WeatherDisplay extends Component {
         const response = await fetch(url).then(response => response.json());
 
         console.log("Weather Data: ", response);
-        const currentWeatherData = response.current;
+        const currentWeatherData = response.daily[0];
         const dailyWeatherData = response.daily;
         let alertWeatherData = [];
         if (!!response.alerts) {
@@ -36,10 +36,12 @@ class WeatherDisplay extends Component {
 
     }
 
-    _tomorrowWeather = () => {
+    _tomorrowWeather = (i) => {
+   
         this.setState({
-            currentWeatherData: this.state.dailyWeatherData[2]
-        })
+            currentWeatherData: this.state.dailyWeatherData[i]
+        }) 
+
     }
 
     _convertKelvintoFahrenheit(k) {
@@ -91,28 +93,17 @@ class WeatherDisplay extends Component {
                 </div>
                 <div className="weeklyWeather">
                     {dailyWeatherData.map((data, index) => {
-                        return (<div key={index}>{this._convertUnixtoDayofWeek(data.dt)}</div>)
+                        return (<div key={index}className="dayDiv" onClick={() => this._tomorrowWeather(index)}>{this._convertUnixtoDayofWeek(data.dt)}</div>)
                     })}
                 </div>
                 <div className="currentWeather">
                     {currentWeatherData.weather ? <WeatherData weather={currentWeatherData} convert={this._convertUnixtoLocal}/>  : '' }
 
-                        <button onClick={() => this._tomorrowWeather()}>Tomorrow</button>
+                        {/* <button onClick={() => this._tomorrowWeather()}>Tomorrow</button> */}
                 </div>
-            </div >
+            </div>
         );
     }
 }
 
 export default WeatherDisplay;
-
-
-
-{/* (<div className="current_temp">
-                        <p>Current Temp:{Math.round(currentWeatherData.temp)}°F</p>
-                        <p>Feels Like:{Math.round(currentWeatherData.feels_like)}°F</p>
-                        <p>Humidity:{currentWeatherData.humidity}%</p>
-                        <p>Sunrise:{this._convertUnixtoLocal(currentWeatherData.sunrise)}</p>
-                        <p>Sunset:{this._convertUnixtoLocal(currentWeatherData.sunset)}</p>
-                         <p>Weather:{currentWeatherData?.weather[0]?.description}</p>
-                    </div> })*/}
