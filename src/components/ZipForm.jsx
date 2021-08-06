@@ -51,7 +51,7 @@ class ZipForm extends Component {
                         }}/>
                     <button type="Submit">Search</button>
                 </form>
-                {!!lat && !!long ? (<WeatherDisplay lat={lat} long={long} address={address} />): null}
+                {!!lat && !!long ? (<WeatherDisplay lat={lat} long={long} address={address} />) : null}
 
             </div>
         );
