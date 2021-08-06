@@ -1,4 +1,5 @@
 import { Component } from "react";
+import WeatherData from "./WeatherData";
 
 class WeatherDisplay extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class WeatherDisplay extends Component {
 
         const response = await fetch(url).then(response => response.json());
 
-        //console.log("Weather Data: ", response);
+        console.log("Weather Data: ", response);
         const currentWeatherData = response.current;
         const dailyWeatherData = response.daily;
         let alertWeatherData = [];
@@ -30,9 +31,15 @@ class WeatherDisplay extends Component {
             alertWeatherData: alertWeatherData
         })
 
-        console.log('State: ', this.state);
-        console.log('Weather Description')
+      //  console.log('State: ', this.state);
+       // console.log('Weather Description', currentWeatherData.weather[0].description);
 
+    }
+
+    _tomorrowWeather = () => {
+        this.setState({
+            currentWeatherData: this.state.dailyWeatherData[2]
+        })
     }
 
     _convertKelvintoFahrenheit(k) {
@@ -71,6 +78,7 @@ class WeatherDisplay extends Component {
 
     render() {
         const { currentWeatherData, dailyWeatherData, alertWeatherData } = this.state;
+        //console.log("Weather Data: ", currentWeatherData.weather)
         return (
             <div className="weatherContainer">
                 <h2>{this.props.address}</h2>
@@ -87,16 +95,9 @@ class WeatherDisplay extends Component {
                     })}
                 </div>
                 <div className="currentWeather">
-                    <div className="current_temp">
-                        <p>Current Temp:{Math.round(currentWeatherData.temp)}°F</p>
-                        <p>Feels Like:{Math.round(currentWeatherData.feels_like)}°F</p>
-                        <p>Humidity:{currentWeatherData.humidity}%</p>
-                        <p>Sunrise:{this._convertUnixtoLocal(currentWeatherData.sunrise)}</p>
-                        <p>Sunset:{this._convertUnixtoLocal(currentWeatherData.sunset)}</p>
-                        {/* <p>Weather:{currentWeatherData.weather[0].description}</p> */}
-                    </div>
+                    {currentWeatherData.weather ? <WeatherData weather={currentWeatherData} convert={this._convertUnixtoLocal}/>  : '' }
 
-
+                        <button onClick={() => this._tomorrowWeather()}>Tomorrow</button>
                 </div>
             </div >
         );
@@ -104,3 +105,14 @@ class WeatherDisplay extends Component {
 }
 
 export default WeatherDisplay;
+
+
+
+{/* (<div className="current_temp">
+                        <p>Current Temp:{Math.round(currentWeatherData.temp)}°F</p>
+                        <p>Feels Like:{Math.round(currentWeatherData.feels_like)}°F</p>
+                        <p>Humidity:{currentWeatherData.humidity}%</p>
+                        <p>Sunrise:{this._convertUnixtoLocal(currentWeatherData.sunrise)}</p>
+                        <p>Sunset:{this._convertUnixtoLocal(currentWeatherData.sunset)}</p>
+                         <p>Weather:{currentWeatherData?.weather[0]?.description}</p>
+                    </div> })*/}
