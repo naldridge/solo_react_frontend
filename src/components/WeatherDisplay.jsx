@@ -13,7 +13,9 @@ class WeatherDisplay extends Component {
 
     async componentDidMount() {
 
-        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.props.lat}&lon=${this.props.long}&units=imperial&exclude=hourly,minutely&appid=c0186da62fd08500743c0b9e60fd76f2`
+        weatherKey = process.env.REACT_APP_WEATHER_KEY;
+
+        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.props.lat}&lon=${this.props.long}&units=imperial&exclude=hourly,minutely&appid=${weatherkey}`
 
         const response = await fetch(url).then(response => response.json());
 

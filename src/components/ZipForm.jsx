@@ -21,7 +21,9 @@ class ZipForm extends Component {
     _handleSubmit = async (e) => {
         e.preventDefault();
 
-        const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.state.zip}&key=AIzaSyDzmHJp1OGtR8iTZRFFGzwIXfpbC6pP8Pk`;
+        const google_key = process.env.REACT_APP_GOOGLE_KEY
+
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.state.zip}&key=${google_key}`;
         const response = await fetch(url).then(response => response.json());
 
         //console.log("zip_response: ", response);
