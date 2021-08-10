@@ -1,5 +1,6 @@
 import { Component } from "react";
 import WeatherData from "./WeatherData";
+import "./styles/WeatherDisplay.css";
 
 class WeatherDisplay extends Component {
     constructor(props) {
@@ -11,32 +12,44 @@ class WeatherDisplay extends Component {
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
 
-        const weatherKey = process.env.REACT_APP_WEATHER_KEY;
-
-        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.props.lat}&lon=${this.props.long}&units=imperial&exclude=hourly,minutely&appid=${weatherKey}`
-
-        const response = await fetch(url).then(response => response.json());
-
-        console.log("Weather Data: ", response);
-        const currentWeatherData = response.daily[0];
-        const dailyWeatherData = response.daily;
-        let alertWeatherData = [];
-        if (!!response.alerts) {
-            alertWeatherData = response.alerts;
-        }
-
-        this.setState({
-            currentWeatherData: currentWeatherData,
-            dailyWeatherData: dailyWeatherData,
-            alertWeatherData: alertWeatherData
-        })
-
-      //  console.log('State: ', this.state);
-       // console.log('Weather Description', currentWeatherData.weather[0].description);
+        this._fetchWeather();
 
     }
+
+    componentDidUpdate(previousProps) {
+        if(this.props.lat !== previousProps.lat) {
+            this._fetchWeather();
+        }
+    }
+
+   async _fetchWeather() {
+
+    const weatherKey = process.env.REACT_APP_WEATHER_KEY;
+    const { lat, long } = this.props;
+
+    const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=imperial&exclude=hourly,minutely,current&appid=${weatherKey}`
+
+    const response = await fetch(url).then(response => response.json());
+
+    console.log("Weather Data: ", response);
+    const currentWeatherData = response.daily[0];
+    const dailyWeatherData = response.daily;
+    let alertWeatherData = [];
+    if (!!response.alerts) {
+        alertWeatherData = response.alerts;
+    }
+
+    this.setState({
+        currentWeatherData: currentWeatherData,
+        dailyWeatherData: dailyWeatherData,
+        alertWeatherData: alertWeatherData
+    })
+
+  //  console.log('State: ', this.state);
+  // console.log('Weather Description', currentWeatherData.weather[0].description);
+   }
 
     _tomorrowWeather = (i) => {
    
@@ -95,13 +108,13 @@ class WeatherDisplay extends Component {
                 </div>
                 <div className="weeklyWeather">
                     {dailyWeatherData.map((data, index) => {
-                        return (<div key={index}className="dayDiv" onClick={() => this._tomorrowWeather(index)}>{this._convertUnixtoDayofWeek(data.dt)}</div>)
+                        return (<div key={index} className="dayDiv" onClick={() => this._tomorrowWeather(index)}>{this._convertUnixtoDayofWeek(data.dt)}</div>)
                     })}
                 </div>
                 <div className="currentWeather">
-                    {currentWeatherData.weather ? <WeatherData weather={currentWeatherData} convert={this._convertUnixtoLocal}/>  : '' }
+                    {currentWeatherData.weather ? <WeatherData weather={currentWeatherData} convertTime={this._convertUnixtoLocal} convertDay={this._convertUnixtoDayofWeek}/>  : '' }
 
-                        {/* <button onClick={() => this._tomorrowWeather()}>Tomorrow</button> */}
+                        
                 </div>
             </div>
         );

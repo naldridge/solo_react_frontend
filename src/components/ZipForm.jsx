@@ -36,8 +36,8 @@ class ZipForm extends Component {
             long: newLong,
             address: newAddress
         });
-/*         console.log("Lat: ", this.state.lat);
-        console.log("Long: ", this.state.long); */
+
+        
 
         
     }
@@ -50,7 +50,7 @@ class ZipForm extends Component {
                 <form onSubmit={this._handleSubmit}>
                     <input type="text" value={this.state.zip} onChange={(e) => {
                             this._handleChange('zip', e.target.value)
-                        }}/>
+                        }} data-testid="loc_input"/>
                     <button type="Submit">Search</button>
                 </form>
                 {!!lat && !!long ? (<WeatherDisplay lat={lat} long={long} address={address} />) : null}

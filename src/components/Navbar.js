@@ -1,11 +1,13 @@
 import Home from './Home';
 import Weather from './Weather';
-import Register from './Register';
-import Login from './Login';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import AuthenticationButton from './AuthenticationButton';
+import './styles/Navbar.css';
 
 
 const Navbar = () => {
+
+
     return (
         <div className="Nav-bar">
             <Router>
@@ -13,10 +15,11 @@ const Navbar = () => {
                     <nav>
                         <Link to="/">Home</Link>
                         <Link to="/weather">Weather</Link>
-                        <Link to="/register">Register</Link>
-                        <Link to="/login">Login</Link>
+                        <div className="userLogin">
+                            <AuthenticationButton />
+                        </div>
                     </nav>
-{/*                     <div className="NavSearch">
+                    {/*                     <div className="NavSearch">
                         <ZipForm />
                     </div> */}
                 </div>
@@ -26,12 +29,6 @@ const Navbar = () => {
                     </Route>
                     <Route path="/weather">
                         <Weather />
-                    </Route>
-                    <Route path="/register">
-                        <Register />
-                    </Route>
-                    <Route path="/login">
-                        <Login />
                     </Route>
                 </Switch>
             </Router>

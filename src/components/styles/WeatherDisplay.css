@@ -1,0 +1,28 @@
+.alertContainer {
+    
+    background-color: red;
+    color: yellow;
+    font-weight: bold;
+}
+
+.weeklyWeather {
+    background-color: grey;
+    display: flex;
+    
+    width: max-content;
+    
+}
+
+.dayDiv {
+    border-style: groove;
+    border-color: black;
+    padding: 12pt;
+}
+
+.dayDiv:active {
+    background-color: lightgrey;
+}
+
+i {
+    color: purple;
+}

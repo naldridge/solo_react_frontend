@@ -1,0 +1,10 @@
+.current_temp {
+    background-color: palegreen;
+    border: black;
+    border-radius: 25px;
+    border-style: groove;
+    padding: 20px;
+    margin: 20px;
+    width: max-content;
+    max-height: max-content;
+}
